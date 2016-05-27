@@ -21,10 +21,11 @@ sub coerce {
     my %args = @_;
 
     my $dt = $args{data_term};
+    my $coerce_to = $args{coerce_to} // 'float(epoch)';
 
     my $res = {};
 
-    unless ($args{coerce_to} eq 'DateTime') {
+    unless ($coerce_to eq 'DateTime') {
         die "To use this coercion rule, you must coerce your date to DateTime (e.g. by adding this attribute 'x.perl.coerce_to' => 'DateTime' to your schema)";
     }
 
