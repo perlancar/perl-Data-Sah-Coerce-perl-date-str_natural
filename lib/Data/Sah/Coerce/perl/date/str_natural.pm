@@ -7,6 +7,11 @@ use 5.010001;
 use strict;
 use warnings;
 
+use Data::Dmp;
+
+# TMP
+our $time_zone = 'UTC';
+
 sub meta {
     +{
         v => 2,
@@ -25,13 +30,17 @@ sub coerce {
 
     my $res = {};
 
-    unless ($coerce_to eq 'DateTime') {
-        die "To use this coercion rule, you must coerce your date to DateTime (e.g. by adding this attribute 'x.perl.coerce_to' => 'DateTime' to your schema)";
-    }
-
     $res->{expr_match} = "!ref($dt)";
     $res->{modules}{"DateTime::Format::Natural"} //= 0;
-    $res->{expr_coerce} = "DateTime::Format::Natural->new->parse_datetime($dt)";
+    $res->{expr_coerce} = join(
+        "",
+        "do { my \$res = DateTime::Format::Natural->new(time_zone => ".dmp($time_zone).")->parse_datetime($dt); ",
+        ($coerce_to eq 'float(epoch)' ? "\$res = \$res->epoch; " :
+             $coerce_to eq 'Time::Moment' ? "\$res = Time::Moment->from_object(\$res); " :
+             $coerce_to eq 'DateTime' ? "" :
+             (die "BUG: Unknown coerce_to '$coerce_to'")),
+        "\$res }",
+    );
 
     $res;
 }
