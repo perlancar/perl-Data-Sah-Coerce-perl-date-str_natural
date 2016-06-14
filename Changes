@@ -1,5 +1,12 @@
 Revision history for Data-Sah-Coerce-perl-date-str_natural
 
+0.003   2016-06-14 (PERLANCAR)
+
+	- Don't require coerce_to=DateTime when using this rule, default to
+	  UTC for time zone instead of floating for ease of converting to
+	  Time::Moment/epoch.
+
+
 0.002   2016-05-27 (PERLANCAR)
 
 	- Impart default coerce_to knowledge to each rule, for convenience.
