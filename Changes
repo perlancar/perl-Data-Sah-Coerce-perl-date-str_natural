@@ -1,5 +1,15 @@
 Revision history for Data-Sah-Coerce-perl-date-str_natural
 
+0.004   2016-06-30 (PERLANCAR)
+
+	- Die on parse failure.
+
+	- Make DateTime::Format::Natural a RuntimeRequires prereq for
+	  convenience of user.
+
+	- [doc] Fix/simplify example.
+
+
 0.003   2016-06-14 (PERLANCAR)
 
 	- Don't require coerce_to=DateTime when using this rule, default to
