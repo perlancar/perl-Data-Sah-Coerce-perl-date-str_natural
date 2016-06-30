@@ -18,7 +18,7 @@ sub meta {
         enable_by_default => 0,
         might_die => 1,
         prio => 60, # a bit lower than normal
-        precludes => [qr/\Astr_alami(_.+)?\z/],
+        precludes => [qr/\A(str_alami(_.+)?|str_flexible)\z/],
     };
 }
 
@@ -34,7 +34,9 @@ sub coerce {
     $res->{modules}{"DateTime::Format::Natural"} //= 0;
     $res->{expr_coerce} = join(
         "",
-        "do { my \$res = DateTime::Format::Natural->new(time_zone => ".dmp($time_zone).")->parse_datetime($dt); ",
+        "do { my \$p = DateTime::Format::Natural->new(time_zone => ".dmp($time_zone)."); my \$res = \$p->parse_datetime($dt); ",
+        # because DF:Natural doesn't die on parse failure
+        "die \"Can't parse date '\".$dt.\"': \".\$p->error unless \$p->success; ",
         ($coerce_to eq 'float(epoch)' ? "\$res = \$res->epoch; " :
              $coerce_to eq 'Time::Moment' ? "\$res = Time::Moment->from_object(\$res); " :
              $coerce_to eq 'DateTime' ? "" :

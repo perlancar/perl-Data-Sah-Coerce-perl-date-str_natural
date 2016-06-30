@@ -5,8 +5,20 @@ use strict;
 use warnings;
 
 use Data::Sah::Coerce qw(gen_coercer);
+use Test::Exception;
 use Test::More 0.98;
 use Test::Needs;
+
+subtest "fails -> dies" => sub {
+    test_needs "DateTime::Format::Flexible";
+
+    my $c = gen_coercer(type=>"date", coerce_rules=>["str_flexible"]);
+
+    # uncoerced
+    is_deeply($c->({}), {}, "uncoerced");
+
+    dies_ok { $c->("foo") } qr/Can't parse/;
+};
 
 subtest "coerce_to=DateTime" => sub {
     test_needs "DateTime";
