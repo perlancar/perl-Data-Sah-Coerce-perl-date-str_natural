@@ -10,9 +10,9 @@ use Test::More 0.98;
 use Test::Needs;
 
 subtest "fails -> dies" => sub {
-    test_needs "DateTime::Format::Flexible";
+    test_needs "DateTime::Format::Natural";
 
-    my $c = gen_coercer(type=>"date", coerce_rules=>["str_flexible"]);
+    my $c = gen_coercer(type=>"date", coerce_rules=>["str_natural"]);
 
     # uncoerced
     is_deeply($c->({}), {}, "uncoerced");
