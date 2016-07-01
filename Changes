@@ -1,5 +1,12 @@
 Revision history for Data-Sah-Coerce-perl-date-str_natural
 
+0.005   2016-07-01 (PERLANCAR)
+
+	- No functional changes.
+
+	- [test] Fix copy-paste mistake [CT].
+
+
 0.004   2016-06-30 (PERLANCAR)
 
 	- Die on parse failure.
